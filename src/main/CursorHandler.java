@@ -60,6 +60,9 @@ public class CursorHandler implements MouseListener {
                     break;
                 }
             }
+            if (gp.ui.submissionRect.contains(p)) {
+                gp.submit = true;
+            }
         }
     }
 

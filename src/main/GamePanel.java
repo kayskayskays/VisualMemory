@@ -5,9 +5,6 @@ import button.ButtonManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.security.Key;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
@@ -47,6 +44,8 @@ public class GamePanel extends JPanel implements Runnable {
     public KeyHandler keyH = new KeyHandler(this);
     public CursorHandler cursorH = new CursorHandler(this);
 
+    public boolean submit = false;
+
     Thread gameThread;
     public int points = 0;
 
@@ -58,25 +57,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
 
         clickedButtons = new ArrayList<>();
-
-        Main.submit.addActionListener(e -> {
-            if (correctButtons != null && clickedButtons != null) {
-                correctButtons.sort(Comparator.comparingInt(p -> p.y));
-                clickedButtons.sort(Comparator.comparingInt(p -> p.y));
-                correctButtons.sort(Comparator.comparingInt(p -> p.x));
-                clickedButtons.sort(Comparator.comparingInt(p -> p.x));
-
-                if (correctButtons.equals(clickedButtons) && correctButtons.size() > 0) {
-                    correctButtons = new ArrayList<>();
-                    clickedButtons = new ArrayList<>();
-                    points += 1;
-                    Main.pointCounter.setText(Integer.toString(points));
-                    buttonM.tickCounter = 0;
-                } else {
-                    livesM.lives--;
-                }
-            }
-        });
 
         addMouseListener(cursorH);
 
@@ -114,6 +94,28 @@ public class GamePanel extends JPanel implements Runnable {
             if (correctButtons == null || correctButtons.size() == 0) {
                 correctButtons = ButtonGenerator.gen(this);
             }
+        }
+        submission();
+    }
+
+    public void submission() {
+        if (submit) {
+            if (correctButtons != null && clickedButtons != null) {
+                correctButtons.sort(Comparator.comparingInt(p -> p.y));
+                clickedButtons.sort(Comparator.comparingInt(p -> p.y));
+                correctButtons.sort(Comparator.comparingInt(p -> p.x));
+                clickedButtons.sort(Comparator.comparingInt(p -> p.x));
+
+                if (correctButtons.equals(clickedButtons) && correctButtons.size() > 0) {
+                    correctButtons = new ArrayList<>();
+                    clickedButtons = new ArrayList<>();
+                    points += 1;
+                    buttonM.tickCounter = 0;
+                } else {
+                    livesM.lives--;
+                }
+            }
+            submit = false;
         }
     }
 

@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -10,7 +9,7 @@ public class UI {
     GamePanel gp;
     Graphics2D g2;
 
-    public Rectangle playRect, recordsRect, quitRect, submission;
+    public Rectangle playRect, recordsRect, quitRect, submissionRect;
 
     Font retro;
 
@@ -50,7 +49,7 @@ public class UI {
             int subX = gp.screenWidth / 2 - subWidth / 2;
             int subY = gp.screenHeight - 5 * subHeight / 4;
 
-            drawSubmissionButton(subX, subY, subWidth, subHeight);
+            submissionRect = drawSubmissionButton(subX, subY, subWidth, subHeight);
 
             int textX = centredX(text);
             int textY = subY + (int) g2.getFontMetrics().getStringBounds(text, g2).getHeight();
@@ -59,7 +58,9 @@ public class UI {
         }
     }
 
-    public void drawSubmissionButton(int x, int y, int width, int height) {
+    public Rectangle drawSubmissionButton(int x, int y, int width, int height) {
+
+        Rectangle rect = new Rectangle(x, y, width, height);
 
         Color c = new Color(0, 200, 0);
         g2.setColor(c);
@@ -69,6 +70,8 @@ public class UI {
         g2.setColor(c);
         g2.setStroke(new BasicStroke(3));
         g2.drawRoundRect(x + 3, y + 3, width - 6, height - 6, 19, 19);
+
+        return rect;
     }
 
     public void drawTitleScreen() {

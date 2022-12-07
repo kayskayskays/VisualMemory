@@ -1,12 +1,8 @@
 package main;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Main {
-
-    public static JLabel pointCounter = new JLabel("0");
-    public static JButton submit = new JButton("Submit");
 
     public static void main(String[] args) {
 
