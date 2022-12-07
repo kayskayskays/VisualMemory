@@ -28,16 +28,16 @@ public class LivesManager {
         }
     }
 
-//    public void draw(Graphics2D g2) {
-//
-//        for (int i = gp.tileSize / 2; i < 3 * totalLives * gp.tileSize / 4; i += 3 * gp.tileSize / 4) {
-//            g2.drawImage(hearts[0], i, 4, gp.tileSize / 2, gp.tileSize / 2, null);
-//        }
-//
-//        for (int i = gp.tileSize / 2; i < 3 * (totalLives - lives) * gp.tileSize / 4; i += 3 * gp.tileSize / 4) {
-//            g2.drawImage(hearts[1], i, 4, gp.tileSize / 2, gp.tileSize / 2, null);
-//        }
-//
-//    }
+    public void draw(Graphics2D g2) {
+
+        for (int i = gp.tileSize / 2; i < totalLives * gp.tileSize; i += gp.tileSize) {
+            g2.drawImage(hearts[0], i, gp.tileSize / 3, 3 * gp.tileSize / 4, 3 * gp.tileSize / 4, null);
+        }
+
+        for (int i = gp.tileSize / 2; i < (totalLives - lives) * gp.tileSize; i += gp.tileSize) {
+            g2.drawImage(hearts[1], i, gp.tileSize / 3, 3 * gp.tileSize / 4, 3 * gp.tileSize / 4, null);
+        }
+
+    }
 
 }

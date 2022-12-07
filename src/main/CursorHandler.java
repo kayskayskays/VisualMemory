@@ -22,6 +22,7 @@ public class CursorHandler implements MouseListener {
         Point p = e.getPoint();
 
         if (gp.gameState == gp.titleState) {
+            gp.restart = true;
             if (gp.ui.playRect.contains(p)) {
                 gp.gameState = gp.playState;
             }
@@ -60,9 +61,26 @@ public class CursorHandler implements MouseListener {
                     break;
                 }
             }
-            if (gp.ui.submissionRect.contains(p)) {
-                gp.submit = true;
+            if (gp.ui.submissionRect != null) {
+                if (gp.ui.submissionRect.contains(p)) {
+                    gp.submit = true;
+                }
             }
+        }
+
+        if (gp.gameState == gp.failState && gp.ui.failCounter > gp.ui.failLimit) {
+            gp.restart = true;
+            if (gp.ui.retryRect.contains(p)) {
+                gp.gameState = gp.playState;
+            }
+            if (gp.ui.titleRect.contains(p)) {
+                gp.gameState = gp.titleState;
+                gp.ui.commandNum = 0;
+            }
+            if (gp.ui.quitRect.contains(p)) {
+                System.exit(0);
+            }
+            gp.restart = true;
         }
     }
 

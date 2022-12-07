@@ -25,16 +25,17 @@ public class GamePanel extends JPanel implements Runnable {
     public int gameState;
     public final int titleState = 0;
     public final int playState = 1;
+    public final int failState = 2;
 
     // FPS
     final int FPS = 60;
 
-    // Clicked point
+    // Buttons
     public List<Point> clickedButtons;
+    public List<Point> correctButtons;
 
     // Buttons
     public ButtonManager buttonM = new ButtonManager(this);
-    public List<Point> correctButtons;
 
     // Lives
     public LivesManager livesM = new LivesManager(this);
@@ -44,10 +45,11 @@ public class GamePanel extends JPanel implements Runnable {
     public KeyHandler keyH = new KeyHandler(this);
     public CursorHandler cursorH = new CursorHandler(this);
 
+    public int points = 0;
     public boolean submit = false;
+    public boolean restart = true;
 
     Thread gameThread;
-    public int points = 0;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -57,6 +59,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
 
         clickedButtons = new ArrayList<>();
+        correctButtons = new ArrayList<>();
 
         addMouseListener(cursorH);
 
@@ -85,17 +88,34 @@ public class GamePanel extends JPanel implements Runnable {
                 repaint();
                 delta--;
             }
-
         }
     }
 
     public void update() {
+        restartGame();
         if (buttonM.mapButtonNum[0][0] != buttonM.mapButtonNum[1][0]) {
             if (correctButtons == null || correctButtons.size() == 0) {
                 correctButtons = ButtonGenerator.gen(this);
             }
+            submission();
+            submit = false;
         }
-        submission();
+        if (livesM.lives == 0) {
+            gameState = failState;
+        }
+    }
+
+    private void restartGame() {
+        if (restart) {
+            ui.failCounter = 0;
+            restart = false;
+            points = 0;
+            livesM.lives = 3;
+            submit = false;
+            buttonM.tickCounter = 0;
+            clickedButtons = new ArrayList<>();
+            correctButtons = new ArrayList<>();
+        }
     }
 
     public void submission() {
@@ -124,11 +144,14 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-            ui.draw(g2);
-            if (gameState == playState) {
-                buttonM.draw(g2);
-//                livesM.draw(g2);
-            }
+        ui.draw(g2);
+        if (gameState == playState) {
+            buttonM.draw(g2);
+            livesM.draw(g2);
+        }
+        if (gameState == failState) {
+            correctButtons.clear();
+        }
 
         g2.dispose();
     }
