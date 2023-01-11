@@ -90,6 +90,7 @@ public class KeyHandler implements KeyListener {
                         code = -1;
                         break;
                     case 2:
+                        gp.buttonM.mapButtonNum = new int[gp.maxScreenCol * gp.maxScreenRow][2];
                         gp.ui.dimAdjust = false;
                         gp.ui.tileAdjust = false;
                         gp.ui.commandNum = 0;

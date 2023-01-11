@@ -87,6 +87,7 @@ public class CursorHandler implements MouseListener {
                     gp.gameState = gp.adjustState;
                     p = new Point();
                 } else if (gp.ui.oTitleRect.contains(p)) {
+                    gp.buttonM.mapButtonNum = new int[gp.maxScreenCol * gp.maxScreenRow][2];
                     gp.ui.commandNum = 0;
                     gp.gameState = gp.titleState;
                     p = new Point();
