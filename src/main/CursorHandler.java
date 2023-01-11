@@ -96,14 +96,18 @@ public class CursorHandler implements MouseListener {
         }
 
         if (gp.gameState == gp.adjustState) {
-            if (gp.ui.dimRect.contains(p) && clickedRect.contains(gp.ui.dimRect)) {
-                gp.ui.dimAdjust = false;
-                gp.gameState = gp.optionsState;
+
+            if (clickedRect != null) {
+                if (gp.ui.dimRect.contains(p) && clickedRect.contains(gp.ui.dimRect)) {
+                    gp.ui.dimAdjust = false;
+                    gp.gameState = gp.optionsState;
+                }
+                if (gp.ui.tileRect.contains(p) && clickedRect.contains(gp.ui.tileRect)) {
+                    gp.ui.tileAdjust = false;
+                    gp.gameState = gp.optionsState;
+                }
             }
-            if (gp.ui.tileRect.contains(p) && clickedRect.contains(gp.ui.tileRect)) {
-                gp.ui.tileAdjust = false;
-                gp.gameState = gp.optionsState;
-            }
+
             if (gp.ui.dimPlus != null) {
                 if (gp.ui.dimPlus.contains(p)) {
                     gp.dimension++;

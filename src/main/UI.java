@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO:
-//  - add a record score at the end screen
-//  - add options functionality that allows for the adjustment of the board
+//  - save high scores
 
 public class UI {
 
@@ -221,6 +220,13 @@ public class UI {
 
             // main colour
             g2.setColor(Color.magenta);
+            g2.drawString(text, x, y);
+
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+            text = "BEST (" + gp.dimension + " / " + gp.tileCount + "): ";
+            x = centredX(text);
+            y += gp.tileSize;
+            g2.setColor(Color.white);
             g2.drawString(text, x, y);
 
             // points

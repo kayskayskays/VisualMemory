@@ -15,7 +15,7 @@ public class ButtonManager {
     public int[][] mapButtonNum;
 
     public int tickCounter = 0;
-    public int tickLimit = 6000;
+    public int tickLimit = 120;
 
     public ButtonManager(GamePanel gp) {
         this.gp = gp;
@@ -64,14 +64,6 @@ public class ButtonManager {
 
             g2.drawImage(button[buttonNum], col, row, gp.tileSize, gp.tileSize, null);
 
-            if (tickCounter < tickLimit & gp.correctButtons != null) {
-                tickCounter++;
-                for (int i = 0; i < gp.correctButtons.size(); i++) {
-                    Point p = gp.correctButtons.get(i);
-                    g2.drawImage(button[2], p.x, p.y, gp.tileSize, gp.tileSize, null);
-                }
-            }
-
             mapButtonNum[index][0] = col;
             mapButtonNum[index][1] = row;
             index++;
@@ -86,6 +78,15 @@ public class ButtonManager {
                 row += heightIncrement + gp.tileSize;
             }
         }
+
+        if (tickCounter < tickLimit & gp.correctButtons != null) {
+            tickCounter++;
+            for (int i = 0; i < gp.correctButtons.size(); i++) {
+                Point p = gp.correctButtons.get(i);
+                g2.drawImage(button[2], p.x, p.y, gp.tileSize, gp.tileSize, null);
+            }
+        }
+
         if (mapButtonNum[index][0] == 0) {
             mapButtonNum[index][0] = -1;
         }

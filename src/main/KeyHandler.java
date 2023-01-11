@@ -7,7 +7,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
-    Rectangle selectedRect;
+    int selectedRect;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -80,13 +80,13 @@ public class KeyHandler implements KeyListener {
                     case 0:
                         gp.ui.dimAdjust = true;
                         gp.gameState = gp.adjustState;
-                        selectedRect = gp.ui.dimRect;
+                        selectedRect = 0;
                         code = -1;
                         break;
                     case 1:
                         gp.ui.tileAdjust = true;
                         gp.gameState = gp.adjustState;
-                        selectedRect = gp.ui.tileRect;
+                        selectedRect = 1;
                         code = -1;
                         break;
                     case 2:
@@ -107,16 +107,16 @@ public class KeyHandler implements KeyListener {
                 gp.ui.tileAdjust = false;
                 gp.gameState = gp.optionsState;
             }
-            if (code == KeyEvent.VK_UP && selectedRect.intersects(gp.ui.dimRect)) {
+            if (code == KeyEvent.VK_UP && selectedRect == 0) {
                 gp.dimension++;
             }
-            if (code == KeyEvent.VK_DOWN && selectedRect.intersects(gp.ui.dimRect)) {
+            if (code == KeyEvent.VK_DOWN && selectedRect == 0) {
                 gp.dimension--;
             }
-            if (code == KeyEvent.VK_UP && selectedRect.contains(gp.ui.tileRect)) {
+            if (code == KeyEvent.VK_UP && selectedRect == 1) {
                 gp.tileCount++;
             }
-            if (code == KeyEvent.VK_DOWN && selectedRect.contains(gp.ui.tileRect)) {
+            if (code == KeyEvent.VK_DOWN && selectedRect == 1) {
                 gp.tileCount--;
             }
 
