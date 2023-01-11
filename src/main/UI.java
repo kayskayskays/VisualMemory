@@ -1,18 +1,30 @@
 package main;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+// TODO:
+//  - add a record score at the end screen
+//  - add options functionality that allows for the adjustment of the board
 
 public class UI {
 
     GamePanel gp;
     Graphics2D g2;
 
-    public Rectangle playRect, recordsRect, quitRect, submissionRect;
+    public Rectangle playRect, optionsRect, quitRect, submissionRect;
     public Rectangle retryRect, titleRect, fQuitRect;
+    public Rectangle dimRect, tileRect, oTitleRect;
+    public Rectangle dimPlus, dimMinus, tilePlus, tileMinus;
+
+    public boolean dimAdjust = false, tileAdjust = false;
+
+    public BufferedImage[] plusMinus = new BufferedImage[2];
 
     List<Point> finalButtons = new ArrayList<>();
 
@@ -31,6 +43,19 @@ public class UI {
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
+
+        getPlusMinusImage();
+    }
+
+    public void getPlusMinusImage() {
+        try {
+            plusMinus[0] = ImageIO.read(getClass().getResourceAsStream("/options/plus.png"));
+
+            plusMinus[1] = ImageIO.read(getClass().getResourceAsStream("/options/minus.png"));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void draw(Graphics2D g2) {
@@ -47,6 +72,9 @@ public class UI {
         }
         if (gp.gameState == gp.failState) {
             drawFailScreen();
+        }
+        if (gp.gameState == gp.optionsState || gp.gameState == gp.adjustState) {
+            drawOptionsScreen();
         }
     }
 
@@ -107,13 +135,13 @@ public class UI {
         }
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36F));
-        text = "RECORDS";
+        text = "OPTIONS";
         x = centredX(text);
         y += gp.tileSize;
         g2.drawString(text, x, y);
         textWidth = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         textHeight = (int) g2.getFontMetrics().getStringBounds(text, g2).getHeight();
-        recordsRect = new Rectangle(gp.screenWidth / 2 - textWidth / 2, y - textHeight, textWidth, textHeight);
+        optionsRect = new Rectangle(gp.screenWidth / 2 - textWidth / 2, y - textHeight, textWidth, textHeight);
         if (commandNum == 1) {
             g2.drawString(">", x - gp.tileSize, y);
         }
@@ -241,6 +269,87 @@ public class UI {
             }
         }
 
+    }
+
+    public void drawOptionsScreen() {
+
+        int textWidth, textHeight;
+
+        // background
+        g2.setColor(new Color(50, 70, 120));
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+
+        // title name
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 54F));
+        String text = "Options";
+        int x = centredX(text);
+        int y = gp.tileSize * 2;
+
+        // shadow
+        g2.setColor(Color.magenta);
+        g2.drawString(text, x + 5, y + 5);
+
+        // main colour
+        g2.setColor(Color.orange);
+        g2.drawString(text, x, y);
+
+        // dimension
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
+        text = "GRID SIZE: " + gp.dimension;
+        x = centredX(text);
+        y += gp.tileSize * 2;
+        g2.drawString(text, x, y);
+        textWidth = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        textHeight = (int) g2.getFontMetrics().getStringBounds(text, g2).getHeight();
+        dimRect = new Rectangle(gp.screenWidth / 2 - textWidth / 2, y - textHeight, textWidth, textHeight);
+        if (commandNum == 0) {
+            g2.drawString(">", x - gp.tileSize, y);
+        }
+        if (dimAdjust) {
+            x += textWidth + gp.tileSize * 0.5;
+            y -= textHeight;
+            g2.drawImage(plusMinus[0], x, y, gp.tileSize, gp.tileSize, null);
+            dimPlus = new Rectangle(x, y, gp.tileSize, gp.tileSize);
+            x += gp.tileSize * 1.5;
+            g2.drawImage(plusMinus[1], x, y, gp.tileSize, gp.tileSize, null);
+            dimMinus = new Rectangle(x, y, gp.tileSize, gp.tileSize);
+            y += textHeight;
+        }
+
+        // tile count
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
+        text = "TILES: " + gp.tileCount;
+        x = centredX(text);
+        y += gp.tileSize;
+        g2.drawString(text, x, y);
+        textWidth = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        textHeight = (int) g2.getFontMetrics().getStringBounds(text, g2).getHeight();
+        tileRect = new Rectangle(gp.screenWidth / 2 - textWidth / 2, y - textHeight, textWidth, textHeight);
+        if (commandNum == 1) {
+            g2.drawString(">", x - gp.tileSize, y);
+        }
+        if (tileAdjust) {
+            x += textWidth + gp.tileSize * 0.5;
+            y -= textHeight;
+            g2.drawImage(plusMinus[0], x, y, gp.tileSize, gp.tileSize, null);
+            tilePlus = new Rectangle(x, y, gp.tileSize, gp.tileSize);
+            x += gp.tileSize * 1.5;
+            g2.drawImage(plusMinus[1], x, y, gp.tileSize, gp.tileSize, null);
+            tileMinus = new Rectangle(x, y, gp.tileSize, gp.tileSize);
+            y += textHeight;
+        }
+
+        // title screen
+        text = "TITLE SCREEN";
+        x = centredX(text);
+        y += gp.tileSize * 2;
+        g2.drawString(text, x, y);
+        textWidth = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        textHeight = (int) g2.getFontMetrics().getStringBounds(text, g2).getHeight();
+        oTitleRect = new Rectangle(gp.screenWidth / 2 - textWidth / 2, y - textHeight, textWidth, textHeight);
+        if (commandNum == 2) {
+            g2.drawString(">", x - gp.tileSize, y);
+        }
     }
 
     public int centredX(String text) {

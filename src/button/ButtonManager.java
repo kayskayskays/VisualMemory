@@ -40,10 +40,8 @@ public class ButtonManager {
 
     public void draw(Graphics2D g2) {
 
-        int dimension = 7;  // change later
-
-        int widthIncrement = (gp.screenWidth - dimension * gp.tileSize) / (dimension + 1);
-        int heightIncrement = (gp.screenHeight - 2 * gp.tileSize - dimension * gp.tileSize) / (dimension + 1);
+        int widthIncrement = (gp.screenWidth - gp.dimension * gp.tileSize) / (gp.dimension + 1);
+        int heightIncrement = (gp.screenHeight - 2 * gp.tileSize - gp.dimension * gp.tileSize) / (gp.dimension + 1);
 
         int col = widthIncrement;
         int row = heightIncrement + gp.tileSize;
@@ -53,7 +51,7 @@ public class ButtonManager {
 
         int index = 0;
 
-        while (row < gp.maxScreenRow * gp.tileSize && rowButtons < dimension) {
+        while (row < gp.maxScreenRow * gp.tileSize && rowButtons < gp.dimension) {
 
             int buttonNum = 0;
             for (int i = 0; i < gp.clickedButtons.size(); i++) {
@@ -81,7 +79,7 @@ public class ButtonManager {
             col += widthIncrement + gp.tileSize;
             colButtons += 1;
 
-            if (col >= gp.maxScreenCol * gp.tileSize || colButtons == dimension) {
+            if (col >= gp.maxScreenCol * gp.tileSize || colButtons == gp.dimension) {
                 colButtons = 0;
                 rowButtons += 1;
                 col = widthIncrement;

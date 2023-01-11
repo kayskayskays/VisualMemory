@@ -15,7 +15,7 @@ public class ButtonGenerator {
         int[][] map = gp.buttonM.mapButtonNum;
         int index;
 
-        while (correctPoints.size() < 4) {
+        while (correctPoints.size() < gp.tileCount) {
             index = 0;
             Random rnd = new Random();
 

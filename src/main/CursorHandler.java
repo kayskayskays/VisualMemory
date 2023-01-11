@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 public class CursorHandler implements MouseListener {
 
     GamePanel gp;
+    Rectangle clickedRect;
 
     public CursorHandler(GamePanel gp) {
         this.gp = gp;
@@ -26,8 +27,11 @@ public class CursorHandler implements MouseListener {
             if (gp.ui.playRect.contains(p)) {
                 gp.gameState = gp.playState;
             }
-            if (gp.ui.recordsRect.contains(p)) {
-                // records
+            if (gp.ui.optionsRect.contains(p)) {
+                gp.ui.commandNum = 0;
+                gp.ui.dimAdjust = false;
+                gp.ui.tileAdjust = false;
+                gp.gameState = gp.optionsState;
             }
             if (gp.ui.quitRect.contains(p)) {
                 System.exit(0);
@@ -64,6 +68,55 @@ public class CursorHandler implements MouseListener {
             if (gp.ui.submissionRect != null) {
                 if (gp.ui.submissionRect.contains(p)) {
                     gp.submit = true;
+                }
+            }
+        }
+
+        if (gp.gameState == gp.optionsState) {
+            if (gp.ui.dimRect != null && gp.ui.tileRect != null && gp.ui.oTitleRect != null) {
+                if (gp.ui.dimRect.contains(p)) {
+                    gp.ui.dimAdjust = true;
+                    clickedRect = gp.ui.dimRect;
+                    gp.ui.commandNum = 0;
+                    gp.gameState = gp.adjustState;
+                    p = new Point();
+                } else if (gp.ui.tileRect.contains(p)) {
+                    gp.ui.tileAdjust = true;
+                    clickedRect = gp.ui.tileRect;
+                    gp.ui.commandNum = 1;
+                    gp.gameState = gp.adjustState;
+                    p = new Point();
+                } else if (gp.ui.oTitleRect.contains(p)) {
+                    gp.ui.commandNum = 0;
+                    gp.gameState = gp.titleState;
+                    p = new Point();
+                }
+            }
+        }
+
+        if (gp.gameState == gp.adjustState) {
+            if (gp.ui.dimRect.contains(p) && clickedRect.contains(gp.ui.dimRect)) {
+                gp.ui.dimAdjust = false;
+                gp.gameState = gp.optionsState;
+            }
+            if (gp.ui.tileRect.contains(p) && clickedRect.contains(gp.ui.tileRect)) {
+                gp.ui.tileAdjust = false;
+                gp.gameState = gp.optionsState;
+            }
+            if (gp.ui.dimPlus != null) {
+                if (gp.ui.dimPlus.contains(p)) {
+                    gp.dimension++;
+                }
+                if (gp.ui.dimMinus.contains(p)) {
+                    gp.dimension--;
+                }
+            }
+            if (gp.ui.tilePlus != null) {
+                if (gp.ui.tilePlus.contains(p)) {
+                    gp.tileCount++;
+                }
+                if (gp.ui.tileMinus.contains(p)) {
+                    gp.tileCount--;
                 }
             }
         }
