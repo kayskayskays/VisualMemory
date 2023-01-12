@@ -31,6 +31,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public int dimension = 7;
     public int tileCount = 4;
+    public int position;
 
     // FPS
     final int FPS = 60;
@@ -39,7 +40,6 @@ public class GamePanel extends JPanel implements Runnable {
     public List<Point> clickedButtons;
     public List<Point> correctButtons;
 
-    // Buttons
     public ButtonManager buttonM = new ButtonManager(this);
 
     // Lives
@@ -53,6 +53,8 @@ public class GamePanel extends JPanel implements Runnable {
     public int points = 0;
     public boolean submit = false;
     public boolean restart = true;
+
+    public ScoreManager scoreM = new ScoreManager();
 
     Thread gameThread;
 
@@ -134,7 +136,7 @@ public class GamePanel extends JPanel implements Runnable {
                 if (correctButtons.equals(clickedButtons) && correctButtons.size() > 0) {
                     correctButtons = new ArrayList<>();
                     clickedButtons = new ArrayList<>();
-                    points += 1;
+                    points++;
                     buttonM.tickCounter = 0;
                 } else {
                     livesM.lives--;
@@ -155,9 +157,28 @@ public class GamePanel extends JPanel implements Runnable {
             livesM.draw(g2);
         }
         if (gameState == failState) {
+            setRecords();
             correctButtons.clear();
         }
 
         g2.dispose();
     }
+
+    public void setRecords() {
+        if (dimension == 2) {
+            position = tileCount - 1;
+        } else if (dimension == 3) {
+            position = 2 + tileCount;
+        } else {
+            position = 10 + (dimension - 4) * 10 + tileCount;
+        }
+
+        if (points > scoreM.records.get(position)) {
+            scoreM.records.set(position, points);
+            scoreM.writeRecords();
+        }
+    }
+
 }
+
+

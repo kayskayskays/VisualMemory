@@ -110,18 +110,41 @@ public class CursorHandler implements MouseListener {
 
             if (gp.ui.dimPlus != null) {
                 if (gp.ui.dimPlus.contains(p)) {
-                    gp.dimension++;
+                    if (gp.dimension < 8) {
+                        gp.dimension++;
+                    } else {
+                        gp.dimension = 2;
+                    }
                 }
                 if (gp.ui.dimMinus.contains(p)) {
-                    gp.dimension--;
+                    if (gp.dimension < 2) {
+                        gp.dimension--;
+                    } else {
+                        gp.dimension = 8;
+                    }
+                    if (gp.dimension * gp.dimension - 1 < gp.tileCount) {
+                        gp.tileCount = gp.dimension * gp.dimension - 1;
+                    }
                 }
             }
             if (gp.ui.tilePlus != null) {
                 if (gp.ui.tilePlus.contains(p)) {
-                    gp.tileCount++;
+                    if (gp.tileCount < 10 && gp.tileCount < gp.dimension * gp.dimension - 1) {
+                        gp.tileCount++;
+                    } else {
+                        gp.tileCount = 1;
+                    }
                 }
                 if (gp.ui.tileMinus.contains(p)) {
-                    gp.tileCount--;
+                    if (gp.tileCount > 1) {
+                        gp.tileCount--;
+                    } else {
+                        if (10 > gp.dimension * gp.dimension) {
+                            gp.tileCount = gp.dimension * gp.dimension - 1;
+                        } else {
+                            gp.tileCount = 10;
+                        }
+                    }
                 }
             }
         }
@@ -135,7 +158,7 @@ public class CursorHandler implements MouseListener {
                 gp.gameState = gp.titleState;
                 gp.ui.commandNum = 0;
             }
-            if (gp.ui.quitRect.contains(p)) {
+            if (gp.ui.fQuitRect.contains(p)) {
                 System.exit(0);
             }
             gp.restart = true;

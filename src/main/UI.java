@@ -10,6 +10,8 @@ import java.util.List;
 
 // TODO:
 //  - save high scores
+// Assume between 1 - 10 tiles flash
+// Assume dimensions between 2 x 2 to 8 x 8
 
 public class UI {
 
@@ -187,6 +189,7 @@ public class UI {
 
     public void drawFailScreen() {
 
+
         if (failCounter == 0) {
             finalButtons.addAll(gp.correctButtons);
         }
@@ -223,7 +226,7 @@ public class UI {
             g2.drawString(text, x, y);
 
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
-            text = "BEST (" + gp.dimension + " / " + gp.tileCount + "): ";
+            text = "BEST (" + gp.dimension + " / " + gp.tileCount + "): " + gp.scoreM.records.get(gp.position);
             x = centredX(text);
             y += gp.tileSize;
             g2.setColor(Color.white);
