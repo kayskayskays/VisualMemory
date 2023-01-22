@@ -1,12 +1,17 @@
 package main;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ScoreManager {
 
+    File scoreDirectory;
     File recordsFile;
     final int recordsRows = 61;
     public List<Integer> records = new ArrayList<>();
@@ -20,6 +25,8 @@ public class ScoreManager {
     public void createRecords() {
 
         try {
+            scoreDirectory = new File(dir);
+            scoreDirectory.mkdir();
             recordsFile = new File(dir, path);
 
             if (!recordsFile.exists()) {
