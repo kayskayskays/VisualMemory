@@ -8,11 +8,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO:
-//  - save high scores
-// Assume between 1 - 10 tiles flash
-// Assume dimensions between 2 x 2 to 8 x 8
-
 public class UI {
 
     GamePanel gp;
