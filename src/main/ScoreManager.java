@@ -8,14 +8,14 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ScoreManager {
 
     File scoreDirectory;
     File recordsFile;
     final int recordsRows = 61;
     public List<Integer> records = new ArrayList<>();
-    String dir = "src/res/scores", path = "records.txt";
+
+    String recPath = "records.txt";
 
     public ScoreManager() {
         createRecords();
@@ -25,9 +25,7 @@ public class ScoreManager {
     public void createRecords() {
 
         try {
-            scoreDirectory = new File(dir);
-            scoreDirectory.mkdir();
-            recordsFile = new File(dir, path);
+            recordsFile = new File(recPath);
 
             if (!recordsFile.exists()) {
 
@@ -70,7 +68,7 @@ public class ScoreManager {
     public void writeRecords() {
 
         try {
-            recordsFile = new File(dir, path);
+            recordsFile = new File(recPath);
             recordsFile.createNewFile();
 
             FileWriter fw = new FileWriter(recordsFile.getAbsoluteFile());
