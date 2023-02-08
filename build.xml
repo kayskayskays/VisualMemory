@@ -1,0 +1,35 @@
+
+<project name = "VisualMemory" basedir = ".">
+
+    <property name="res" location="src/res"/>
+
+    <target name = "init">
+        <mkdir dir = "build/classes"/>
+    </target>
+
+    <target name = "compile" depends = "init">
+        <javac includeAntRuntime = "no" fork = "true" srcdir = "src" destdir = "build/classes"/>
+    </target>
+
+    <target name = "jar">
+        <mkdir dir = "build/jar"/>
+        <jar destfile = "build/jar/VisualMemory.jar" basedir = "build/classes"> 
+            <fileset dir = "${res}"/>
+            <fileset file = "records.txt"/>
+            <manifest>
+                <attribute name = "Main-Class" value = "main.Main"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name = "run">
+        <java jar="build/jar/VisualMemory.jar" fork="true"/>
+    </target>
+
+    <target name = "clean" depends = "init">
+        <delete dir = "build"/>
+    </target>
+
+</project>
+
+
